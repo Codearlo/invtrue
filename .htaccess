@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# No aplicar reglas a archivos o directorios que existen físicamente
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirigir peticiones como /api/products a /api/endpoints/products.php
+RewriteRule ^([\w-]+)$ endpoints/$1.php [L]
