@@ -3,12 +3,10 @@ const BASE_URL = '/api'; // Apunta a la carpeta /api/
 async function fetchAPI(endpoint, options = {}) {
     const url = `${BASE_URL}${endpoint}`;
     
-    // Configuración por defecto para las cabeceras
     const defaultHeaders = {
         'Accept': 'application/json'
     };
 
-    // No establecer 'Content-Type' para FormData, el navegador lo hace.
     if (!(options.body instanceof FormData)) {
         defaultHeaders['Content-Type'] = 'application/json';
     }
@@ -27,7 +25,12 @@ async function fetchAPI(endpoint, options = {}) {
             const errorData = await response.json();
             throw new Error(errorData.message || `Error HTTP ${response.status}`);
         }
-        return response.json();
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json();
+        }
+        return {};
+
     } catch (error) {
         console.error(`Error en la llamada API a ${endpoint}:`, error);
         throw error;
@@ -40,7 +43,7 @@ async function fetchAPI(endpoint, options = {}) {
 export const getProducts = () => fetchAPI('/products');
 export const createProduct = (formData) => fetchAPI('/products', {
     method: 'POST',
-    body: formData, // Se envía como FormData, no JSON
+    body: formData,
 });
 
 // Órdenes
@@ -58,3 +61,9 @@ export const createPurchase = (purchaseData) => fetchAPI('/purchases', {
 
 // Categorías
 export const getCategories = () => fetchAPI('/categories');
+
+// Ventas
+export const createSale = (saleData) => fetchAPI('/sales', {
+    method: 'POST',
+    body: JSON.stringify(saleData),
+});
