@@ -9,7 +9,6 @@ $host = 'localhost'; // ej: 'localhost' o un servidor remoto
 $dbname = 'u347334547_invtrue';
 $username = 'u347334547_user_inv';
 $password = 'CH7322a#';
-$charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 $options = [
