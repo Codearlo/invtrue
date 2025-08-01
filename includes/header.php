@@ -1,17 +1,11 @@
 <?php
 /**
  * Función para el control de caché de archivos CSS y JS.
- * Añade la fecha de modificación del archivo a la URL para forzar al navegador
- * a descargar la nueva versión si ha cambiado.
- *
- * @param string $file La ruta al archivo desde la raíz del proyecto.
- * @return string La ruta del archivo con el parámetro de versión.
  */
 function version_file($file) {
     if (!file_exists($file)) {
-        return $file; // Devuelve la ruta original si el archivo no existe
+        return $file;
     }
-    // Añade el timestamp de la última modificación como parámetro 'v'
     $version = filemtime($file);
     return $file . '?v=' . $version;
 }
@@ -27,8 +21,9 @@ function version_file($file) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <link rel="stylesheet" href="<?php echo version_file('css/base.css'); ?>">
-    
     <?php if (isset($page_css)): ?>
         <link rel="stylesheet" href="<?php echo version_file('css/' . htmlspecialchars($page_css)); ?>">
     <?php endif; ?>
@@ -37,22 +32,45 @@ function version_file($file) {
 <div class="app-container">
     <nav class="sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-logo">G</span>
-            <h1 class="sidebar-title">GestorPro</h1>
+            <a href="dashboard.php" class="logo-link">
+                <span class="sidebar-logo">G</span>
+                <h1 class="sidebar-title">GestorPro</h1>
+            </a>
         </div>
         <ul class="nav-links">
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="inventario.php">Inventario</a></li>
-            <li><a href="compras.php">Compras</a></li>
-            <li><a href="ordenes.php">Órdenes</a></li>
-            <li><a href="pos.php">Punto de Venta</a></li>
-            <li><a href="finanzas.php">Finanzas</a></li>
-            <li><a href="reportes.php">Reportes</a></li>
+            <li class="nav-item">
+                <a href="dashboard.php"><i class='bx bxs-dashboard'></i></a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li class="nav-item">
+                <a href="inventario.php"><i class='bx bxs-package'></i></a>
+                <span class="tooltip">Inventario</span>
+            </li>
+            <li class="nav-item">
+                <a href="compras.php"><i class='bx bxs-cart'></i></a>
+                <span class="tooltip">Compras</span>
+            </li>
+            <li class="nav-item">
+                <a href="ordenes.php"><i class='bx bxs-receipt'></i></a>
+                <span class="tooltip">Órdenes</span>
+            </li>
+            <li class="nav-item">
+                <a href="pos.php"><i class='bx bxs-store-alt'></i></a>
+                <span class="tooltip">Punto de Venta</span>
+            </li>
+            <li class="nav-item">
+                <a href="finanzas.php"><i class='bx bxs-bank'></i></a>
+                <span class="tooltip">Finanzas</span>
+            </li>
+            <li class="nav-item">
+                <a href="reportes.php"><i class='bx bxs-bar-chart-alt-2'></i></a>
+                <span class="tooltip">Reportes</span>
+            </li>
         </ul>
     </nav>
 
     <div class="main-content">
         <header class="main-header">
             <h2><?php echo $page_title ?? 'Bienvenido'; ?></h2>
-            </header>
+        </header>
         <main>

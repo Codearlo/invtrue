@@ -112,3 +112,51 @@ body {
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
 }
+
+/* --- ESTILOS PARA LA NUEVA NAVEGACIÓN CON ICONOS --- */
+
+/* Ajusta el header del sidebar para que todo el logo sea un link */
+.sidebar-header .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--sidebar-text);
+}
+
+/* Posicionamiento para los tooltips */
+.nav-item {
+    position: relative;
+}
+
+/* Estilo de los iconos en los links */
+.nav-links a i {
+    font-size: 1.5rem; /* Iconos más grandes */
+    vertical-align: middle;
+}
+
+/* Estilo del tooltip */
+.nav-item .tooltip {
+    position: absolute;
+    left: 70px; /* Posición a la derecha del sidebar */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary-accent);
+    color: #000;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    white-space: nowrap; /* Evita que el texto se parta en dos líneas */
+    
+    /* Oculto por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+
+/* Muestra el tooltip al pasar el mouse sobre el item de la lista */
+.nav-item:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
