@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title ?? 'GestorPro'; ?></title>
-    <link rel="stylesheet" href="css/main.css">
+    
+    <link rel="stylesheet" href="css/base.css">
+    
+    <?php if (isset($page_css)): ?>
+        <link rel="stylesheet" href="css/<?php echo htmlspecialchars($page_css); ?>">
+    <?php endif; ?>
+
     <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
 </head>
 <body>

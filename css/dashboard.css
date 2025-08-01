@@ -1,0 +1,5 @@
+/* Estilos específicos para el dashboard. */
+/* Por ejemplo, podríamos hacer el texto de bienvenida más grande. */
+.card h2 {
+    color: var(--primary-color);
+}

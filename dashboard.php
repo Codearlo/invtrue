@@ -2,7 +2,10 @@
 // Definimos el título de la página
 $page_title = 'Dashboard';
 
-// Incluimos el encabezado de la página
+// Definimos la hoja de estilos específica para esta página
+$page_css = 'dashboard.css';
+
+// Incluimos el encabezado
 require_once 'includes/header.php';
 ?>
 
