@@ -1,0 +1,23 @@
+/* Estilos específicos para la página de inventario */
+
+/* Hacer que la columna de acciones sea más pequeña y centrada */
+.table-responsive th:last-child,
+.table-responsive td:last-child {
+    text-align: center;
+    width: 120px;
+}
+
+/* Colores de fila alternos para mejorar la legibilidad */
+.table-responsive tbody tr:nth-child(even) {
+    background-color: #f9fafb; /* Un gris muy claro */
+}
+
+/* Resaltar la fila al pasar el mouse por encima */
+.table-responsive tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo específico para la imagen del producto en la tabla */
+.table-responsive img {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
