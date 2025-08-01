@@ -52,7 +52,7 @@ switch ($method) {
                 }
                 $filename = uniqid() . '-' . basename($_FILES['image']['name']);
                 $target_file = $upload_dir . $filename;
-                
+
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
                     $image_path = 'uploads/' . $filename;
                 }
@@ -60,7 +60,7 @@ switch ($method) {
 
             $stmt = $pdo->prepare("INSERT INTO products (name, sku, image_path, suggested_sale_price) VALUES (?, ?, ?, ?)");
             $stmt->execute([$name, $sku, $image_path, $price]);
-            
+
             http_response_code(201);
             echo json_encode(['message' => 'Producto creado con éxito', 'id' => $pdo->lastInsertId()]);
 
@@ -69,7 +69,7 @@ switch ($method) {
             echo json_encode(['message' => 'Error al crear el producto: ' . $e->getMessage()]);
         }
         break;
-        
+
     default:
         http_response_code(405);
         echo json_encode(['message' => 'Método no permitido']);
