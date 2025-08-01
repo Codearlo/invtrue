@@ -1,9 +1,11 @@
 RewriteEngine On
 
-# No aplicar reglas a archivos o directorios que existen físicamente
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+# Redirige las peticiones de la API a la carpeta de endpoints
+# Ej: /api/products -> /api/endpoints/products.php
+RewriteRule ^api/([\w-]+)/?$ api/endpoints/$1.php [L]
 
-# Redirigir peticiones como /api/products a /api/endpoints/products.php
-RewriteRule ^([\w-]+)$ endpoints/$1.php [L]
+# Si la petición no es un archivo o directorio existente...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# ...redirige todo a index.html para que el router de JavaScript se encargue.
+RewriteRule ^(.*)$ index.html [L,QSA]
