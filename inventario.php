@@ -1,18 +1,12 @@
 <?php
 // --- LÓGICA DE LA PÁGINA ---
 
-// 1. Definir variables de la página
 $page_title = 'Inventario';
-// Opcional: si creamos estilos específicos para la tabla de inventario
-// $page_css = 'inventario.css'; 
+require_once 'config/database.php';
+require_once 'includes/header.php';
 
-// 2. Incluir archivos necesarios
-require_once 'config/database.php'; // Conexión a la base de datos
-require_once 'includes/header.php'; // Cabecera y menú
-
-// 3. Obtener los productos de la base de datos
 try {
-    // Consulta que calcula el stock disponible y en espera para cada producto
+    // Consulta actualizada para incluir el nombre de la categoría
     $sql = "
         SELECT
             p.id,
@@ -20,10 +14,13 @@ try {
             p.sku,
             p.image_path,
             p.suggested_sale_price,
+            c.name AS category_name, -- Obtenemos el nombre de la categoría
             COALESCE(SUM(poi.quantity_received - poi.quantity_sold), 0) AS stock_disponible,
             COALESCE(SUM(CASE WHEN po.status != 'Recibido' THEN poi.quantity - poi.quantity_received ELSE 0 END), 0) AS stock_en_espera
         FROM 
             products p
+        LEFT JOIN 
+            categories c ON p.category_id = c.id -- Unimos con la tabla de categorías
         LEFT JOIN 
             purchase_order_items poi ON p.id = poi.product_id
         LEFT JOIN 
@@ -38,9 +35,8 @@ try {
     $products = $stmt->fetchAll();
 
 } catch (PDOException $e) {
-    // Manejo de errores de base de datos
     $error_message = "Error al obtener los productos: " . $e->getMessage();
-    $products = []; // Asegurarse de que $products es un array vacío en caso de error
+    $products = [];
 }
 
 ?>
@@ -63,7 +59,7 @@ try {
                 <tr>
                     <th>Imagen</th>
                     <th>Producto</th>
-                    <th>SKU</th>
+                    <th>Categoría</th> <th>SKU</th>
                     <th>Stock Disponible</th>
                     <th>Stock en Espera</th>
                     <th>Precio Venta Sug.</th>
@@ -73,7 +69,7 @@ try {
             <tbody>
                 <?php if (empty($products)): ?>
                     <tr>
-                        <td colspan="7" style="text-align: center;">No hay productos en el inventario.</td>
+                        <td colspan="8" style="text-align: center;">No hay productos en el inventario.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($products as $product): ?>
@@ -86,6 +82,9 @@ try {
                                 <?php endif; ?>
                             </td>
                             <td><?php echo htmlspecialchars($product['name']); ?></td>
+                            <td>
+                                <span class="badge"><?php echo htmlspecialchars($product['category_name'] ?? 'Sin categoría'); ?></span>
+                            </td>
                             <td><?php echo htmlspecialchars($product['sku'] ?? 'N/A'); ?></td>
                             <td><?php echo (int)$product['stock_disponible']; ?></td>
                             <td><?php echo (int)$product['stock_en_espera']; ?></td>
@@ -101,8 +100,6 @@ try {
     </div>
 </div>
 
-
 <?php
-// Incluimos el pie de página
 require_once 'includes/footer.php';
 ?>

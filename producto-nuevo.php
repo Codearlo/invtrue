@@ -1,52 +1,59 @@
 <?php
-// --- LÓGICA DE PROCESAMIENTO DEL FORMULARIO ---
+// --- LÓGICA DE LA PÁGINA ---
 
-// Inicializar variables para mensajes
+require_once 'config/database.php';
+
+// Inicializar variables
 $success_message = '';
 $error_message = '';
+$categories = [];
+
+// Obtener todas las categorías para el dropdown
+try {
+    $stmt = $pdo->query("SELECT id, name FROM categories ORDER BY name ASC");
+    $categories = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $error_message = "Error al cargar las categorías: " . $e->getMessage();
+}
 
 // Verificar si el formulario ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    require_once 'config/database.php';
-
     // 1. Recoger datos del formulario
     $name = $_POST['name'] ?? '';
     $sku = $_POST['sku'] ?? null;
     $price = $_POST['suggested_sale_price'] ?? 0.00;
+    $category_id = $_POST['category_id'] ?? null; // Nuevo campo
     $image_path = null;
 
-    // 2. Validación básica
-    if (empty($name) || empty($price)) {
-        $error_message = 'El nombre y el precio son campos obligatorios.';
+    // 2. Validación
+    if (empty($name) || empty($price) || empty($category_id)) {
+        $error_message = 'Nombre, precio y categoría son campos obligatorios.';
     } else {
         // 3. Manejo de la subida de la imagen
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
             $upload_dir = 'uploads/';
-            // Crear el directorio si no existe
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
             }
-            // Generar un nombre de archivo único para evitar sobreescrituras
             $filename = uniqid() . '-' . basename($_FILES['image']['name']);
             $target_file = $upload_dir . $filename;
 
-            // Mover el archivo subido al directorio de destino
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image_path = $target_file; // Guardar la ruta en la variable
+                $image_path = $target_file;
             } else {
                 $error_message = 'Hubo un error al subir la imagen.';
             }
         }
 
-        // 4. Insertar en la base de datos (si no hubo errores previos)
+        // 4. Insertar en la base de datos si no hubo errores
         if (empty($error_message)) {
             try {
-                $sql = "INSERT INTO products (name, sku, image_path, suggested_sale_price) VALUES (?, ?, ?, ?)";
+                // Se añade category_id a la consulta
+                $sql = "INSERT INTO products (name, sku, image_path, suggested_sale_price, category_id) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $pdo->prepare($sql);
-                $stmt->execute([$name, $sku, $image_path, $price]);
+                $stmt->execute([$name, $sku, $image_path, $price, $category_id]);
                 
-                // Redirigir al inventario después de crear el producto para evitar reenvíos del formulario
                 header("Location: inventario.php?status=success");
                 exit();
 
@@ -59,11 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 // --- VISTA DE LA PÁGINA ---
-
 $page_title = 'Crear Nuevo Producto';
-// Opcional: podríamos crear un css 'formularios.css'
-// $page_css = 'formularios.css'; 
-
 require_once 'includes/header.php';
 ?>
 
@@ -81,6 +84,19 @@ require_once 'includes/header.php';
             <label for="name">Nombre del Producto</label>
             <input type="text" id="name" name="name" required>
         </div>
+
+        <div class="form-group">
+            <label for="category_id">Categoría</label>
+            <select id="category_id" name="category_id" required>
+                <option value="">-- Seleccione una categoría --</option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>">
+                        <?php echo htmlspecialchars($category['name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
         <div class="form-group">
             <label for="sku">SKU (Código)</label>
             <input type="text" id="sku" name="sku">
