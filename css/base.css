@@ -1,91 +1,114 @@
-/* --- Reset Básico y Variables --- */
+/* --- Variables de Diseño (Basadas en la imagen) --- */
+:root {
+    --primary-accent: #bfff00; /* Verde Lima Vibrante */
+    --background-color: #f7f7f7;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --sidebar-bg: #111827;
+    --sidebar-text: #f9fafb;
+    --sidebar-accent: var(--primary-accent);
+
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --font-family: 'Inter', sans-serif;
+}
+
+/* --- Reset y Estilos Globales --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
-:root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --background-color: #f4f4f9;
-    --card-bg: #ffffff;
-    --shadow: 0 2px 4px rgba(0,0,0,0.1);
-    --spacing-unit: 1rem;
-}
-
-/* --- Estilos Globales --- */
 body {
+    font-family: var(--font-family);
     background-color: var(--background-color);
-    color: var(--dark-color);
-    line-height: 1.6;
+    color: var(--text-primary);
 }
 
-header, footer {
-    background-color: var(--dark-color);
-    color: var(--light-color);
-    text-align: center;
-    padding: var(--spacing-unit);
-}
-
-nav {
+/* --- Estructura Principal --- */
+.app-container {
     display: flex;
-    flex-wrap: wrap;
-    background-color: #fff;
-    padding: calc(var(--spacing-unit) / 2);
-    box-shadow: var(--shadow);
 }
 
-nav a {
-    color: var(--primary-color);
-    padding: 0.8rem;
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 1.5rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: var(--primary-accent);
+    color: #000;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-content: center;
+    border-radius: 8px;
+}
+
+.sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-links a {
+    color: var(--sidebar-text);
     text-decoration: none;
-    text-align: center;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    flex-grow: 1;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    display: block;
+    transition: background-color 0.2s ease-in-out;
 }
 
-nav a:hover, nav a.active { /* Puedes añadir lógica en PHP para la clase .active */
-    background-color: #e9ecef;
-    color: #0056b3;
+.nav-links a:hover, .nav-links a.active {
+    background-color: #374151; /* Un gris oscuro para el hover */
 }
 
-main {
-    padding: var(--spacing-unit);
+/* Contenido Principal */
+.main-content {
+    margin-left: 250px; /* Mismo ancho que el sidebar */
+    width: calc(100% - 250px);
+    padding: 2rem;
 }
 
-/* --- Clases de Utilidad --- */
+.main-header {
+    margin-bottom: 2rem;
+}
+
+.main-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Clases de utilidad */
 .card {
     background: var(--card-bg);
-    padding: calc(var(--spacing-unit) * 1.5);
-    border-radius: 8px;
+    padding: 1.5rem;
+    border-radius: 12px;
     box-shadow: var(--shadow);
-    margin-bottom: var(--spacing-unit);
-}
-
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: var(--spacing-unit);
-}
-
-th, td {
-    padding: 0.8rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-}
-
-thead {
-    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
 }

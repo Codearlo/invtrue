@@ -1,20 +1,33 @@
 <?php
-// Definimos el título de la página
 $page_title = 'Dashboard';
-
-// Definimos la hoja de estilos específica para esta página
-$page_css = 'dashboard.css';
-
-// Incluimos el encabezado
+$page_css = 'dashboard.css'; // Usaremos CSS específico para la rejilla
 require_once 'includes/header.php';
 ?>
 
-<div class="card">
-    <h2>Dashboard</h2>
-    <p>Bienvenido a GestorPro. Selecciona una opción del menú para comenzar.</p>
+<div class="dashboard-grid">
+    <div class="card highlight-card">
+        <h3>Best Apartments</h3>
+        <h2>Green Oasis Residence</h2>
+        <p>124 Apartments</p>
+        <p>539 Rooms</p>
+    </div>
+
+    <div class="card">
+        <h4>Total Revenue</h4>
+        <p class="data-value">$ 873,421.39</p>
+    </div>
+
+    <div class="card">
+        <h4>Completed Deals</h4>
+        <p class="data-value">1,269</p>
+    </div>
+
+    <div class="card full-width">
+        <h4>Average Sale Value</h4>
+        <p>Gráfico de ventas aquí.</p>
+    </div>
 </div>
 
 <?php
-// Incluimos el pie de página
 require_once 'includes/footer.php';
 ?>

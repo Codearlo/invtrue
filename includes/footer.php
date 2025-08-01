@@ -1,8 +1,3 @@
 </main>
-
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> GestorPro. Todos los derechos reservados.</p>
-    </footer>
-
-    </body>
+    </div> </div> </body>
 </html>
