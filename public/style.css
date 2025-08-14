@@ -1,0 +1,30 @@
+/* public/style.css */
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    background-color: #475569; /* slate-600 */
+}
+
+.nav-link.active {
+    background-color: #6366f1; /* indigo-500 */
+    font-weight: bold;
+}
